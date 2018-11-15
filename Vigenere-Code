@@ -1,0 +1,100 @@
+// ConsoleApplication1.cpp : Definiert den Einstiegspunkt für die Konsolenanwendung.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include <stdio.h>
+
+
+int main() {
+	int number_of_rows = 27;
+	int number_of_columnes = 27;
+	//encoding-chiffre
+	char chiffre[27][27];
+	char x = '@';
+	for (int i = 0; i < number_of_rows; i++) {
+		for (int c = 0; c < number_of_columnes; c++) {
+			chiffre[i][c] = x;
+			x++;
+			if (x > 'Z') {
+				x = (x - 'Z') + '?';
+			}
+		}
+		x++;
+	}
+
+	//print encode-chiffre
+	printf("Encode-Tabelle: \n");
+	printf("    | @ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z \n");
+	printf("----+-------------------------------------------------------\n");
+	char letter1 = '@';
+	for (int e = 0; e < number_of_rows; e++) {
+		printf(" %c  |", letter1);
+		for (int r = 0; r < number_of_columnes; r++) {
+			printf("%2c", chiffre[e][r]);
+		}
+		letter1 = letter1 + 1;
+		printf("\n");
+	}
+
+
+	//decoding-chiffre
+	char dechiffre[27][27];
+	int y = 0;
+	int z = 0;
+	char w = '@';
+	for (int a = 0; a < number_of_rows; a++) {
+		for (int b = 0; b < number_of_columnes; b++) {
+			if (w > 'Z') {
+				w = (w - 'Z') + '?';
+			}
+			dechiffre[a][b] = w;
+			w++;
+		}
+		w--;
+	}
+
+	//print decode-chiffre
+	printf("\nDecode-Tabelle: \n");
+	printf("    | @ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z \n");
+	printf("----+-------------------------------------------------------\n");
+	char letter2 = '@';
+	for (int k = 0; k < number_of_rows; k++) {
+		printf(" %c  |", letter2);
+		for (int l = 0; l < number_of_columnes; l++) {
+			printf("%2c", dechiffre[k][l]);
+		}
+		printf("\n");
+		letter2 = letter2 + 1;
+	}
+	int function;
+	printf("Verschluesseln(0) oder Entschluesseln(1)?:");
+	scanf_s("%d", &function);
+	if (function == 0) {
+		//encoding a single letter with another letter
+		char encrypt_letter = 0;
+		char key = 0;
+		printf("Geben Sie den zu verschluesselnden Buchstaben ein(@ - Z):");
+		scanf_s(" %c", &encrypt_letter);
+		printf("Geben Sie den Schluessel ein(@ - Z):");
+		scanf_s(" %c", &key);
+		int iencrypt_letter = (encrypt_letter - '@');
+		int ikey = (key - '@');
+		char iencrypted_letter = chiffre[ikey][iencrypt_letter];
+		printf("Der verschluesselte Buchstabe ist: %c\n", iencrypted_letter);
+	}
+	else {
+		//decoding a single letter with the key it was encoded with
+		char encrypted_letter = 0;
+		char key = 0;
+		printf("Geben Sie den verschluesselten Buchstaben an:");
+		scanf_s(" %c", &encrypted_letter);
+		printf("Geben sie den Schluessel an:");
+		scanf_s(" %c", &key);
+		int iencrypted_letter = (encrypted_letter - '@');
+		int ikey = (key - '@');
+		char decrypted_letter = dechiffre[iencrypted_letter][ikey];
+		printf("Der entschluesselte Buchstabe ist: %c\n", decrypted_letter);
+	}
+	return 0;
+}
