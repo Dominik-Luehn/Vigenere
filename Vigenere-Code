@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string>
 
-
 int main() {
 	int number_of_rows = 27;
 	int number_of_columnes = 27;
