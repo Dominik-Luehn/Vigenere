@@ -1,7 +1,10 @@
+// Vigenere.cpp : Definiert den Einstiegspunkt für die Konsolenanwendung.
+//
+
 #include "stdafx.h"
-#include <iostream>
+#include <stdlib.h>
 #include <stdio.h>
-#include <string>
+#include <string.h>
 
 int main() {
 	int number_of_rows = 27;
@@ -9,13 +12,13 @@ int main() {
 	//encoding-chiffre
 	char chiffre[27][27];
 	char x = '@';
-	for (int i = 0; i < number_of_rows; i++) {
-		for (int c = 0; c < number_of_columnes; c++) {
-			chiffre[i][c] = x;
-			x++;
+	for (int a = 0; a < number_of_rows; a++) {
+		for (int b = 0; b < number_of_columnes; b++) {
 			if (x > 'Z') {
 				x = (x - 'Z') + '?';
 			}
+			chiffre[a][b] = x;
+			x++;
 		}
 		x++;
 	}
@@ -26,27 +29,25 @@ int main() {
 	printf("    | @ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z \n");
 	printf("----+-------------------------------------------------------\n");
 	char letter1 = '@';
-	for (int e = 0; e < number_of_rows; e++) {
-		printf(" %c  |", letter1);
-		for (int r = 0; r < number_of_columnes; r++) {
-			printf("%2c", chiffre[e][r]);
-		}
-		letter1 = letter1 + 1;
-		printf("\n");
+	for (int c = 0; c < number_of_rows; c++) {
+	printf(" %c  |", letter1);
+	for (int d = 0; d < number_of_columnes; d++) {
+	printf("%2c", chiffre[c][d]);
+	}
+	letter1 = letter1 + 1;
+	printf("\n");
 	}*/
 
 
 	//decoding-chiffre
 	char dechiffre[27][27];
-	int y = 0;
-	int z = 0;
 	char w = '@';
-	for (int a = 0; a < number_of_rows; a++) {
-		for (int b = 0; b < number_of_columnes; b++) {
+	for (int e = 0; e < number_of_rows; e++) {
+		for (int f = 0; f < number_of_columnes; f++) {
 			if (w > 'Z') {
 				w = (w - 'Z') + '?';
 			}
-			dechiffre[a][b] = w;
+			dechiffre[e][f] = w;
 			w++;
 		}
 		w--;
@@ -58,31 +59,66 @@ int main() {
 	printf("    | @ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z \n");
 	printf("----+-------------------------------------------------------\n");
 	char letter2 = '@';
-	for (int k = 0; k < number_of_rows; k++) {
-		printf(" %c  |", letter2);
-		for (int l = 0; l < number_of_columnes; l++) {
-			printf("%2c", dechiffre[k][l]);
-		}
-		printf("\n");
-		letter2 = letter2 + 1;
+	for (int g = 0; g < number_of_rows; g++) {
+	printf(" %c  |", letter2);
+	for (int h = 0; h < number_of_columnes; h++) {
+	printf("%2c", dechiffre[g][h]);
+	}
+	printf("\n");
+	letter2 = letter2 + 1;
 	}*/
 
 
 	int type_of_input;
 	printf("Woerter(0) oder Buchstaben(1) Ver-/Entschluesseln?:");
-	scanf_s("%d", &type_of_input);
+	scanf_s(" %d", &type_of_input);
 	if (type_of_input == 0) {
 
 		int de_or_encode;
 		printf("Verschluesseln(0) oder Entschluesseln(1)?:");
-		scanf_s("%d", &de_or_encode);
+		scanf_s(" %d", &de_or_encode);
 		if (de_or_encode == 0) {
 
 			//encoding a string with another string(key)
-			char string[101];
+
+			char str_input[101];
 			printf("Geben Sie den Text(max. 100 Zeichen) an, der verschluesselt werden soll:");
-			scanf_s("%s ", string);
-			printf("Eingabe: %s", string);
+			scanf_s(" %s", &str_input);
+			int str_input_length = 0;
+			for (int j = 0; str_input[j] != '\0'; j++) {
+				str_input_length++;
+			}
+
+			char key_input[5];
+			printf("Geben Sie den Schluessel(max. 4 Zeichen) an:\n");
+			scanf_s(" %s", &key_input);
+			int key_input_length = 0;
+			for (int i = 0; key_input[i] != '\0' ;i++) {
+				key_input_length++;
+			}
+
+			char* output = calloc(str_input_length, sizeof(char));
+			int keys_in_input = (str_input_length / key_input_length);
+			int left_over_letters = str_input_length % key_input_length;
+			int key_input_place = 0;
+			for (int k = 0; k <= keys_in_input; k++) {
+				key_input_place++;
+				if (key_input_place > key_input_length) {
+					key_input_place = 0;
+				}
+				output[k] = ((str_input[k] - '@') + (key_input[key_input_place] - '@') % 27) + '@';
+				if (left_over_letters == 1) {
+					output[k] = ((str_input[k] - '@') + (key_input[0] - '@') % 27) + '@';
+					break;
+				}
+				else if (left_over_letters > 1) {
+					for (int m = 0; m <= left_over_letters; m++) {
+						output[k] = ((str_input[k] - '@') + (key_input[m] - '@') % 27) + '@';
+					}
+					break;
+				}
+			}   
+
 
 		}
 		else if (de_or_encode == 0) {
@@ -100,6 +136,7 @@ int main() {
 		if (de_or_encode == 0) {
 
 			//encoding a single letter with another letter
+
 			char encrypt_letter = 0;
 			char key = 0;
 			printf("Geben Sie den zu verschluesselnden Buchstaben ein(@ - Z):");
@@ -115,6 +152,7 @@ int main() {
 		else if (de_or_encode == 1) {
 
 			//decoding a single letter with the key it was encoded with
+
 			char encrypted_letter = 0;
 			char key = 0;
 			printf("Geben Sie den verschluesselten Buchstaben an:");
